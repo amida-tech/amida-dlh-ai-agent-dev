@@ -1,0 +1,61 @@
+# MCP Snowflake Configuration
+# This file configures the Model Context Protocol integration with Snowflake services
+
+snowflake:
+  cortex_analyst:
+    enabled: true
+    endpoint: "${SNOWFLAKE_ENDPOINT}"
+    description: "Natural language to SQL query processing"
+    
+  cortex_search:
+    enabled: true
+    endpoint: "${SNOWFLAKE_ENDPOINT}"
+    description: "Vector-based search across Snowflake data"
+    
+  cortex_agents:
+    enabled: true
+    endpoint: "${SNOWFLAKE_ENDPOINT}"
+    description: "Pre-built AI agents for specific tasks"
+
+# Connection configuration (use environment variables)
+connection:
+  account: "${SNOWFLAKE_ACCOUNT}"
+  user: "${SNOWFLAKE_USER}"
+  password: "${SNOWFLAKE_PASSWORD}"
+  warehouse: "${SNOWFLAKE_WAREHOUSE:-COMPUTE_WH}"
+  database: "${SNOWFLAKE_DATABASE}"
+  schema: "${SNOWFLAKE_SCHEMA:-PUBLIC}"
+  role: "${SNOWFLAKE_ROLE:-ACCOUNTADMIN}"
+
+# MCP Server Configuration
+mcp:
+  server_path: "mcp/snowflake-mcp-server"
+  timeout_seconds: 30
+  retry_attempts: 3
+  
+# Available Cortex Services
+services:
+  analyst:
+    description: "Convert natural language questions to SQL queries"
+    input_types: ["text"]
+    output_types: ["sql", "data", "visualization"]
+    
+  search:
+    description: "Search across unstructured and structured data"
+    input_types: ["text", "vector"]
+    output_types: ["results", "relevance_scores"]
+    
+  agents:
+    available_agents:
+      - name: "data_analyst"
+        description: "Performs data analysis tasks"
+      - name: "report_generator"
+        description: "Generates reports from data"
+      - name: "anomaly_detector"
+        description: "Detects anomalies in datasets"
+
+# Logging and monitoring
+logging:
+  level: "INFO"
+  format: "json"
+  include_request_id: true
